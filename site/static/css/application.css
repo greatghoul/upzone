@@ -48,14 +48,6 @@ html, body {
   margin-top: 20px;
 }
 
-.viewport {
-  position: absolute;
-  top: 71px;
-  left: 20px;
-  right: 20px;
-  bottom: 101px;
-  overflow: hidden;
-}
 
 .main {
   height: 100%;
@@ -200,18 +192,28 @@ input[type=file] {
   display: none !important;
 }
 
-.area-drop, .area-preview {
+.container {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  border: 3px dashed #cccccc;
+  top: 71px;
+  left: 20px;
+  right: 20px;
+  bottom: 101px;
+  overflow: hidden;
   background: #f7f7f7;
   color: #BE8B8D;
+  display: none;
 }
 
-.area-preview {
-  display: none;
-  border-style: solid;
+.container.active {
+  display: block;
+}
+
+.container-drop {
+  border: 3px dashed #dddddd;
+}
+
+.container-preview {
+  border: 3px solid #dddddd;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
