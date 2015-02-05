@@ -1,3 +1,6 @@
-/.venv
 *.pyc
 *.wsgic
+
+/.venv
+/site-packages
+/site/config.py

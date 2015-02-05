@@ -1,0 +1,7 @@
+# Debug is disabled by default.
+DEBUG = False
+
+UPYUN_BUCKET   = '<bucket>'
+UPYUN_USERNAME = '<username>'
+UPYUN_PASSWORD = '<password>'
+UPYUN_DOMAIN   = '<domain>'
