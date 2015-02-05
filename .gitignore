@@ -4,3 +4,4 @@
 /.venv
 /site-packages
 /site/config.py
+/site/site-packages.zip
