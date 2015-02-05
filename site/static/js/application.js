@@ -39,31 +39,26 @@ $(function() {
   function previewImage(image) {
     $('.container.active').removeClass('active');
     $('.container-preview').addClass('active');
-
+    
     var $container = $('.container-preview');
-    var reader  = new FileReader();
 
-    reader.readAsDataURL(image);
-    reader.onload = function (event) {
-      var imageObj = new Image();
-      
-      var url = event.target.result;
+    var url = URL.createObjectURL(image);
+    var img = new Image();
 
-      imageObj.onload = function() {
-        var width  = $container.innerWidth();
-        var height = $container.innerHeight();
+    img.onload = function() {
+      var width  = $container.innerWidth();
+      var height = $container.innerHeight();
 
-        if (this.width > width || this.height > height) {
-          $container.css('background-size', 'contain');
-        } else {
-          $container.css('background-size', 'auto');
-        }
+      if (this.width > width || this.height > height) {
+        $container.css('background-size', 'contain');
+      } else {
+        $container.css('background-size', 'auto');
+      }
 
-        $container.css('background-image', 'url(' + url + ')');
-      };
-
-      imageObj.src = url;
+      $container.css('background-image', 'url(' + url + ')');
     };
+
+    img.src = url;
   }
 
   $('body').on('paste', function(event) {
