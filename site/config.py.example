@@ -1,7 +1,10 @@
 # Debug is disabled by default.
 DEBUG = False
+SECRET_KEY = 'suckmycock!'
 
 UPYUN_BUCKET   = '<bucket>'
 UPYUN_USERNAME = '<username>'
 UPYUN_PASSWORD = '<password>'
 UPYUN_DOMAIN   = '<domain>'
+
+PASSWORD = '<password>''

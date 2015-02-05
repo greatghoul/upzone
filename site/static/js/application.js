@@ -1,5 +1,10 @@
 $(function() {
   function uploadFile(file) {
+    $('.btn-upload').hide();
+
+    $info = $('.input-info');
+    $info.show();
+
     var formData = new FormData();
     formData.append('image', file, file.name);
 
@@ -11,8 +16,21 @@ $(function() {
       dataType: 'json',
       processData: false,
       contentType: false,
+      xhr: function() {
+        var xhr = new XMLHttpRequest();
+        xhr.addEventListener('progress', function(evt){
+          if (evt.lengthComputable) {  
+            var percent = Math.round(evt.loaded / evt.total * 100);
+            $info.css('background-size', '' + percent + '% 100%');
+          }
+        }, false);
+
+        return xhr;
+      },
       success: function(data, textStatus, jqXHR) {
-        console.log(data);
+        if (data.success) {
+          $info.val(data.url);
+        }
       },
       error: function(jqXHR, textStatus, errorThrown) {
         console.log('ERRORS: ' + textStatus, errorThrown);
@@ -64,7 +82,7 @@ $(function() {
   $('body').on('paste', function(event) {
     getPastedImage(event, function(image) {
       previewImage(image);
-      // uploadFile(file);
+      uploadFile(image);
     });
   });
 });

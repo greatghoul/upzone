@@ -48,6 +48,24 @@ html, body {
   margin-top: 20px;
 }
 
+.input-info {
+  text-align: center;
+  font-weight: bold;
+  color: #f3f3f3;
+  display: none;
+  margin: 25px auto;
+  height: 30px;
+  line-height: 30px;
+  width: 80%;
+  background-image: url(../img/progress.png);
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  transition: background-size 1s ease-in;
+  -moz-transition: background-size 1s ease-in;
+  -ms-transition: background-size 1s ease-in;
+  -o-transition: background-size 1s ease-in;
+  -webkit-transition: background-size 1s ease-in;
+}
 
 .main {
   height: 100%;
@@ -210,6 +228,9 @@ input[type=file] {
 
 .container-drop {
   border: 3px dashed #dddddd;
+  background-image: url(../img/drop-here.png);
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 .container-preview {
