@@ -77,4 +77,8 @@ $(function() {
       uploadFile(image);
     });
   });
+
+  $('.input-info').on('click', function() {
+    $(this).select();
+  });
 });

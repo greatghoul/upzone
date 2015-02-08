@@ -213,14 +213,14 @@ input[type=file] {
 }
 
 .container-drop {
-  border: 3px dashed #dddddd;
+  border: 3px dashed #e2e2e2;
   background-image: url(../img/drop-here.png);
   background-repeat: no-repeat;
   background-position: center center;
 }
 
 .container-preview {
-  border: 3px solid #dddddd;
+  border: 3px solid #e2e2e2;
   background-position: center center;
   background-repeat: no-repeat;
 }
