@@ -48,11 +48,10 @@ html, body {
   margin-top: 20px;
 }
 
-.input-info {
+#message {
   text-align: center;
   font-weight: bold;
   color: #888888;
-  display: none;
   margin: 25px auto;
   height: 30px;
   line-height: 30px;
@@ -205,12 +204,8 @@ input[type=file] {
   overflow: hidden;
   background: #f7f7f7;
   color: #BE8B8D;
-  display: none;
 }
 
-.container.active {
-  display: block;
-}
 
 .container-drop {
   border: 3px dashed #e2e2e2;

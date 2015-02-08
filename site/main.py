@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import os
 import datetime
 
@@ -9,6 +11,9 @@ from flask import request
 from flask import Response
 from flask import jsonify
 from flask import render_template
+
+from tags import js_tag
+from tags import css_tag
 
 from upyun import UpYun
 from shortid import ShortId
@@ -62,13 +67,15 @@ def home():
 @requires_auth
 def upload():
     image = request.files.get('image', None)
+    print image
 
     if image:
         filename = generate_filename(image)
         result = uploader(request.authorization).put(filename, image.read())
+        print result
 
         if result:
             url = 'http://%s/%s' % (app.config['UPYUN_DOMAIN'], filename)
-            return jsonify(success=True, url=url)
+            return jsonify(success=True, message=url)
         
-    return jsonify(success=False)
+    return jsonify(success=False, message=u"上传失败")

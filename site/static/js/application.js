@@ -1,84 +1,100 @@
-$(function() {
-  function uploadFile(file) {
-    $btn = $('.btn-upload').attr('disabled', 'disabled').text('正在上传 ...');
-    $info = $('.input-info');
+function getImage(event, callback) {
+  var items = event.originalEvent.clipboardData.items;
 
-    var formData = new FormData();
-    formData.append('image', file, file.name);
+  for (var i = 0; i < items.length; i++) {
+    var item = items[i];
 
-    $.ajax({
-      url: '/upload',
-      type: 'POST',
-      data: formData,
-      cache: false,
-      dataType: 'json',
-      processData: false,
-      contentType: false,
-      success: function(data, textStatus, jqXHR) {
-        $btn.hide();
-        $info.show();
-        if (data.success) {
-          $info.val(data.url).focus().select();
-        } else {
-          $info.val('上传失败');
-        }
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        $btn.hide();
-        $info.show().val('上传失败');
-      }
-    });
-  }
-
-  function getPastedImage(event, callback) {
-    var items = event.originalEvent.clipboardData.items;
-
-    for (var i = 0; i < items.length; i++) {
-      var item = items[i];
-
-      if (/image\/.*/i.test(item.type)) {
-        var file = item.getAsFile();
-        file.name = item.type.replace(/image\//i, 'paste.');
-        return callback(file);
-      }
+    if (/image\/.*/i.test(item.type)) {
+      var image = item.getAsFile();
+      image.name = item.type.replace(/image\//i, 'paste.');
+      return callback(image);
     }
-
-    return null;
   }
+}
 
-  function previewImage(image) {
-    $('.container.active').removeClass('active');
-    $('.container-preview').addClass('active');
-    
-    var $container = $('.container-preview');
+var app = angular.module('UpZoneApp', []);
 
-    var url = URL.createObjectURL(image);
-    var img = new Image();
-
-    img.onload = function() {
-      var width  = $container.innerWidth();
-      var height = $container.innerHeight();
-
-      if (this.width > width || this.height > height) {
-        $container.css('background-size', 'contain');
-      } else {
-        $container.css('background-size', 'auto');
-      }
-
-      $container.css('background-image', 'url(' + url + ')');
-    };
-
-    img.src = url;
-  }
-
-  $('body').on('paste', function(event) {
-    getPastedImage(event, function(image) {
-      previewImage(image);
-      uploadFile(image);
+app.directive('ngPasteImage', function() {
+  function link(scope, element, attrs) {
+    element.bind('paste', function(event) {
+      getImage(event, function(image) {
+        scope.image = image;
+        scope.$apply(function() {
+          scope.$eval(attrs.ngPasteImage);
+        });
+      });
     });
+  }
+
+  return { link: link };
+});
+
+app.directive('ngPreview', function() {
+  function link(scope, element, attrs) {
+    scope.$watch(attrs.ngPreview, function(image) {
+      if (image) {
+        var url   = URL.createObjectURL(image);
+        var img   = new Image();
+
+        img.onload = function() {
+          var width  = element.innerWidth();
+          var height = element.innerHeight();
+
+          if (this.width > width || this.height > height) {
+            element.css('background-size', 'contain');
+          } else {
+            element.css('background-size', 'auto');
+          }
+
+          element.css('background-image', 'url(' + url + ')');
+        };
+
+        img.src = url;
+      } else {
+        element.css('background-image', 'none');
+      }
+    });
+  }
+
+  return { link: link };
+});
+
+app.controller("UploadCtrl", function($scope, $http, $timeout) {
+  $scope.image = null;
+  $scope.message = null;
+  $scope.success = false;
+
+  $scope.upload = function(image) {
+    var formData = new FormData();
+    formData.append('image', image, image.name);
+
+    var request = $http.post('/upload', formData, {
+      transformRequest: angular.identity,
+      headers: { 'Content-Type': undefined },
+      responseType: 'json'
+    });
+
+    request.success(function(data, status) {
+      $scope.success = data.success;
+      $scope.message = data.message;
+    });
+  };
+
+  $scope.handleKey = function($event) {
+    if ($event.keyCode == 27) {
+      $scope.image = null;
+      $scope.success = null;
+      $scope.message = null;
+    }
+  };
+
+  $('#message').bind('click', function() {
+    this.select();
   });
 
-  $('.input-info').on('click', function() {
-    $(this).select();
+  $scope.$watch('success', function(success) {
+    $timeout(function() {
+      $('#message').trigger('click');
+    }, 100);
   });
 });

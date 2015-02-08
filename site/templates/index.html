@@ -1,31 +1,40 @@
+{% import '_helpers.html' as tags %}
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app="UpZoneApp">
 <head>
   <meta charset="UTF-8">
   <title>UPZone</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/application.css') }}">
+
+  {{ tags.css('/static/css/application.css') }}
+  {{ tags.js('/static/lib/jquery/dist/jquery.min.js') }}
+  {{ tags.js('/static/lib/angular/angular.min.js') }}
+  {{ tags.js('/static/js/application.js') }}
 </head>
-<body>
-  <div class="header">
+<body ng-controller="UploadCtrl"
+      ng-paste-image="upload(image)"
+      ng-keyup="handleKey($event)">
+  {% raw %}
+  <div class="header {{ hello }}" >
     <a href="https://www.upyun.com/" class="upyun" target="_blank">
       <img src="http://upfiles.b0.upaiyun.com/logo/90x45.png" alt="UPYUN">
     </a>
 
-    <h3 class="brand">又拍云图</h3>
+    <h3 class="brand">又拍云图 {{ hello }}</h3>
   </div>
 
-  <div class="container container-drop active">
+  <div class="container container-drop" ng-hide="image">
   </div>
 
-  <div class="container container-preview">
+  <div class="container container-preview" ng-preview="image" ng-show="image">
   </div>
 
   <div class="footer">
-    <button class="btn-upload">上传图片</button>
-    <input type="text" class="input-info" readonly />
+    <button class="btn-upload" ng-hide="message">{{ image ? '正在上传 ...' : '上传图片' }}</button>
+    <input type="text" id="message" readonly
+           ng-select-on="message"
+           ng-show="message"
+           ng-model="message" />
   </div>
-
-  <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
-  <script src="{{ url_for('static', filename='js/application.js') }}"></script>
+  {% endraw %}
 </body>
 </html>

@@ -1,0 +1,7 @@
+{
+  "name": "upzone",
+  "dependencies": {
+    "angular": "~1.3.12",
+    "jquery": "~2.1.3"
+  }
+}

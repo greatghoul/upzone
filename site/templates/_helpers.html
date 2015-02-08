@@ -1,0 +1,7 @@
+{% macro js(filename) -%}
+<script type="text/javascript" src="{{ filename }}"></script>
+{%- endmacro %}
+
+{% macro css(filename) -%}
+<link rel="stylesheet" type="text/css" href="{{ filename }}" />
+{%- endmacro %}
