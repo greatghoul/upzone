@@ -67,12 +67,10 @@ def home():
 @requires_auth
 def upload():
     image = request.files.get('image', None)
-    print image
 
     if image:
         filename = generate_filename(image)
         result = uploader(request.authorization).put(filename, image.read())
-        print result
 
         if result:
             url = 'http://%s/%s' % (app.config['UPYUN_DOMAIN'], filename)
