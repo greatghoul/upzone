@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>UPZone</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/application.css') }}">
+</head>
+<body>
+  <div class="header">
+    <a href="https://www.upyun.com/" class="upyun" target="_blank">
+      <img src="http://upfiles.b0.upaiyun.com/logo/90x45.png" alt="UPYUN">
+    </a>
+
+    <h3 class="brand">又拍云图</h3>
+  </div>
+
+  <div class="container container-drop active">
+  </div>
+
+  <div class="container container-preview">
+  </div>
+
+  <div class="footer">
+    <button class="btn-upload">上传图片</button>
+    <input type="text"   class="input-info" readonly />
+  </div>
+
+  <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="{{ url_for('static', filename='js/application.js') }}"></script>
+</body>
+</html>

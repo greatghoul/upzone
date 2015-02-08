@@ -10,7 +10,7 @@ from flask import Response
 from flask import jsonify
 from flask import render_template
 
-import upyun
+from upyun import UpYun
 from shortid import ShortId
 
 app = Flask(__name__)
@@ -22,47 +22,40 @@ app.config.from_pyfile(config_file, silent=True)
 
 short_id = ShortId()
 
-def uploader():
-    return upyun.UpYun(app.config['UPYUN_BUCKET'],
-                       session['username'],
-                       session['password'],
-                       timeout=30,
-                       endpoint=upyun.ED_AUTO)
-
+def uploader(auth):
+    return UpYun(app.config['UPYUN_BUCKET'], auth.username, auth.password)
+                  
 def generate_filename(image):
     folder_name = datetime.date.today().strftime('%y%m')
     file_ext    = image.mimetype.lower().replace('image/', '')
     file_name   = '%s.%s' % (short_id.generate(), file_ext)
     return '%s/%s' % (folder_name, file_name)
 
-def check_auth(username, password):
-    session['username'] = username
-    session['password'] = password
-
+def check_auth(auth):
     try:
-      uploader().usage()
+      uploader(auth).usage()
       return True
     except Exception as e:
-      print '%s: %s' % (e.msg, e.err)
+      print "Error: %s" % e
       return False
-
-def authenticate():
-    message = 'Please login your operator.'
-    headers = {'WWW-Authenticate': 'Basic realm="%s"' % message}
-    return Response(message, 401, headers)
 
 def requires_auth(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         auth = request.authorization
-        if not auth or not check_auth(auth.username, auth.password):
-            return authenticate()
-        return f(*args, **kwargs)
+
+        if auth and check_auth(auth):
+            return f(*args, **kwargs)
+        else:
+            message = 'Please login your operator.'
+            headers = {'WWW-Authenticate': 'Basic realm="%s"' % message}
+            return Response(message, 401, headers)
+
     return decorated
 
 @app.route('/', methods=['GET'])
 @requires_auth
-def hello():
+def home():
     return render_template('index.html')
 
 @app.route('/upload', methods=['POST'])
@@ -72,7 +65,7 @@ def upload():
 
     if image:
         filename = generate_filename(image)
-        result = uploader().put(filename, image.read())
+        result = uploader(request.authorization).put(filename, image.read())
 
         if result:
             url = 'http://%s/%s' % (app.config['UPYUN_DOMAIN'], filename)
