@@ -1,9 +1,7 @@
 $(function() {
   function uploadFile(file) {
-    $('.btn-upload').hide();
-
+    $btn = $('.btn-upload').attr('disabled', 'disabled').text('正在上传 ...');
     $info = $('.input-info');
-    $info.show();
 
     var formData = new FormData();
     formData.append('image', file, file.name);
@@ -16,24 +14,18 @@ $(function() {
       dataType: 'json',
       processData: false,
       contentType: false,
-      xhr: function() {
-        var xhr = new XMLHttpRequest();
-        xhr.addEventListener('progress', function(evt){
-          if (evt.lengthComputable) {  
-            var percent = Math.round(evt.loaded / evt.total * 100);
-            $info.css('background-size', '' + percent + '% 100%');
-          }
-        }, false);
-
-        return xhr;
-      },
       success: function(data, textStatus, jqXHR) {
+        $btn.hide();
+        $info.show();
         if (data.success) {
-          $info.val(data.url);
+          $info.val(data.url).focus().select();
+        } else {
+          $info.val('上传失败');
         }
       },
       error: function(jqXHR, textStatus, errorThrown) {
-        console.log('ERRORS: ' + textStatus, errorThrown);
+        $btn.hide();
+        $info.show().val('上传失败');
       }
     });
   }
