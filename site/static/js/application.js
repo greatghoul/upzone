@@ -1,12 +1,10 @@
-function getImage(event, callback) {
-  var items = event.originalEvent.clipboardData.items;
-
+function getImage(items, callback) {
   for (var i = 0; i < items.length; i++) {
     var item = items[i];
 
     if (/image\/.*/i.test(item.type)) {
-      var image = item.getAsFile();
-      image.name = item.type.replace(/image\//i, 'paste.');
+      var image = (item instanceof File) ? item : item.getAsFile();
+      image.name = image.name || item.type.replace(/image\//i, 'paste.');
       return callback(image);
     }
   }
@@ -17,7 +15,8 @@ var app = angular.module('UpZoneApp', []);
 app.directive('ngPasteImage', function() {
   function link(scope, element, attrs) {
     element.bind('paste', function(event) {
-      getImage(event, function(image) {
+      var items = event.originalEvent.clipboardData.items;
+      getImage(items, function(image) {
         scope.image = image;
         scope.$apply(function() {
           scope.$eval(attrs.ngPasteImage);
@@ -64,6 +63,10 @@ app.controller("UploadCtrl", function($scope, $http, $timeout) {
   $scope.message = null;
   $scope.success = false;
 
+  $scope.clickUpload = function() {
+    angular.element('#image').trigger('click');
+  };
+
   $scope.upload = function(image) {
     var formData = new FormData();
     formData.append('image', image, image.name);
@@ -90,6 +93,13 @@ app.controller("UploadCtrl", function($scope, $http, $timeout) {
 
   $('#message').bind('click', function() {
     this.select();
+  });
+
+  $('#image').bind('change', function() {
+    getImage(this.files, function(image) {
+      $scope.image = image;
+      $scope.upload(image);
+    });
   });
 
   $scope.$watch('success', function(success) {

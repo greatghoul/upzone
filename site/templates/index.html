@@ -29,7 +29,10 @@
   </div>
 
   <div class="footer">
-    <button class="btn-upload" ng-hide="message">{{ image ? '正在上传 ...' : '上传图片' }}</button>
+    <button class="btn-upload" ng-hide="message" ng-click="clickUpload()">
+      {{ image ? '正在上传 ...' : '上传图片' }}
+    </button>
+    <input type="file" id="image" class="ng-hide" />
     <input type="text" id="message" readonly
            ng-select-on="message"
            ng-show="message"
