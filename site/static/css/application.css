@@ -23,6 +23,57 @@ html, body {
   color: #888888;
 }
 
+nav {
+  font-size: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  height: 30px;
+  width: 160px;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+nav a {
+  color: #888888;
+  font-size: 14px;
+  display: inline-block;
+  height: 28px;
+  line-height: 28px;
+  margin: 0;
+  padding-left: 10px;
+  padding-right: 10px;
+  outline: none;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+nav a.active, nav a:active {
+  background: #e0e0e0;
+}
+
+nav a:hover {
+  background: #d6d6d6;
+  border-color: #d6d6d6;
+}
+
+nav a:first-child {
+  border-right: 0;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+nav a:last-child {
+  border-left: 0;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
 .upyun {
   float: right;
   margin-top: 2px;
