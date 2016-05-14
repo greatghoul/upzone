@@ -12,14 +12,10 @@ from flask import Response
 from flask import jsonify
 from flask import render_template
 
-from tags import js_tag
-from tags import css_tag
-
 from upyun import UpYun
 from shortid import ShortId
 
 app = Flask(__name__)
-app.debug = True
 
 instance_path = os.path.dirname(__file__)
 config_file = os.path.join(instance_path, 'config.py')

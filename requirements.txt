@@ -1,2 +1,5 @@
+requests
 upyun
+flask
 shortid
+fabric
