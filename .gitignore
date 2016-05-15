@@ -6,3 +6,5 @@
 /site/config.py
 /site/site-packages.zip
 /site/static/lib
+
+/fabfile.py

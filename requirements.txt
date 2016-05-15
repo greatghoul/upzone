@@ -3,3 +3,4 @@ upyun
 flask
 shortid
 fabric
+fabric-virtualenv
