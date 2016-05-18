@@ -14,10 +14,10 @@ from flask import render_template
 
 from upyun import UpYun
 from shortid import ShortId
+from upzone import config
 
-instance_path = os.path.dirname(__file__)
-app = Flask(__name__, instance_path=instance_path, instance_relative_config=True)
-app.config.from_pyfile('config.py', silent=True)
+app = Flask(__name__)
+app.config.from_object(config)
 
 short_id = ShortId()
 
