@@ -15,11 +15,9 @@ from flask import render_template
 from upyun import UpYun
 from shortid import ShortId
 
-app = Flask(__name__)
-
 instance_path = os.path.dirname(__file__)
-config_file = os.path.join(instance_path, 'config.py')
-app.config.from_pyfile(config_file, silent=True)
+app = Flask(__name__, instance_path=instance_path, instance_relative_config=True)
+app.config.from_pyfile('config.py', silent=True)
 
 short_id = ShortId()
 
